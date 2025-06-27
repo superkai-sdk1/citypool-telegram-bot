@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: citypool-telegram-bot
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BOT_TOKEN
+        sync: false  # Установить вручную в Render панели
+      - key: CITY_GROUP_ID
+        sync: false  # -1002018963369
+      - key: CITY_TOPIC_ID
+        sync: false  # 67316
+      - key: CLASSIC_GROUP_ID
+        sync: false  # -1001281350483
+      - key: POLL_TIME
+        value: "01:00"
+      - key: TIMEZONE
+        value: "Europe/Moscow"
+      - key: REMINDER_END_TIME
+        value: "19:00"
+      - key: CITY_POLL_QUESTION
+        value: "Городская мафия"
+      - key: CLASSIC_POLL_QUESTION
+        value: "Спортивная мафия"
+      - key: POLL_OPTIONS
+        value: "Я приду,Меня не будет,Я думаю,Я опаздаю"
+      - key: RENDER_SERVICE_URL
+        sync: false  # https://your-service-name.onrender.com (для self-ping)
+    plan: free
+    region: oregon  # Или frankfurt для Европы
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    disk:
+      name: sqlite-disk
+      sizeGB: 1
+      mountPath: /opt/render/project/data
